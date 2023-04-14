@@ -32,13 +32,17 @@ def clean_data(data):
     return data
 
 
+
 #Create a Spark session
 spark = SparkSession.builder.master('local[*]').getOrCreate() 
 sc = SparkContext.getOrCreate() 
 sc.setLogLevel("ERROR")
+
 #Get response object from the API using the 'get_data' function
 response = get_data()
+
 #Create a dataframe from the RDD
 json_rdd = sc.parallelize(response.json().values()) 
+
 data = spark.read.json(json_rdd) 
 data = clean_data(data)
