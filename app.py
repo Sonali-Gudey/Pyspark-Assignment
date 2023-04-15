@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 from covid_data import data
 from pyspark.sql.functions import sum
 
-
+print("\nThe data after cleaning and creation of dataframe: \n")
 data.show(36)
 app = Flask(__name__)
 
@@ -81,4 +81,4 @@ def get_least_efficient_state():
 
 #Running the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
