@@ -61,7 +61,7 @@ def get_least_covid_cases():
 #Get the total number of covid cases
 @app.route('/total_cases')
 def get_total_cases():
-    total_cases = data.select(sum(data.confirm).alias("Total cases")).collect()[0][0]
+    total_cases = data.select(sum(data.total).alias("Total cases")).collect()[0][0]
     return jsonify({'Total Cases':total_cases})
 
 
