@@ -26,7 +26,7 @@ def home():
 #Export data to a csv file at the given path
 @app.route('/getcsvfile')
 def getcsvfile():
-    data.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("/Users/sonali_gudey/Desktop/spark_result")
+    data.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").save("/Users/sonali_gudey/Desktop/spark_result")
     return jsonify({"Message":"Results stored succesfully to '/Users/sonali_gudey/Desktop/spark_result' path"})
 
 
