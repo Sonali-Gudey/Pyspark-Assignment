@@ -70,8 +70,8 @@ def home():
 ```
 @app.route('/getcsvfile')
 def getcsvfile():
-    data.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("/Users/sonali_gudey/Desktop/spark_results")
-    return jsonify({"Message":"Results stored succesfully to '/Users/sonali_gudey/Desktop/spark_results' path"})
+    data.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("/Users/sonali_gudey/Desktop/spark_result")
+    return jsonify({"Message":"Results stored succesfully to '/Users/sonali_gudey/Desktop/spark_result' path"})
 ```
 
 * This is a Flask route that allows the user to export the data in the Spark dataframe to a CSV file. The data is first repartitioned into one partition and then saved as a CSV file with a header at the specified path. The function returns a JSON response confirming that the results were successfully stored at the given path.
@@ -83,7 +83,7 @@ def getcsvfile():
 ```
 @app.route('/most_affected_state')
 def get_most_affected_state():
-    most_affected_state=data.sort((data.death.cast("Long")/data.confirm.cast("Long")).desc()).select(col("state")).collect()[0][0]
+    most_affected_state = data.sort((data.death/data.confirm).desc()).select(col("state")).collect()[0][0]
     return jsonify({'most_affected_state': most_affected_state})
 ```
 
@@ -94,7 +94,7 @@ def get_most_affected_state():
 ```
 @app.route('/least_affected_state')
 def get_least_affected_state():
-    least_affected_state=data.sort((data.death.cast("Long")/data.confirm.cast("Long"))).select(col("state")).collect()[0][0]
+    least_affected_state = data.sort((data.death/data.confirm)).select(col("state")).collect()[0][0]
     return jsonify({'least_affected_state': least_affected_state})
 ```
 
@@ -105,7 +105,7 @@ def get_least_affected_state():
 ```
 @app.route('/highest_covid_cases')
 def get_highest_covid_cases():
-    highest_covid_cases=data.sort((data.confirm).cast("Long").desc()).select(col("state")).collect()[0][0]
+    highest_covid_cases = data.sort((data.confirm).desc()).select(col("state")).collect()[0][0]
     return jsonify({'get_highest_covid_cases':highest_covid_cases})
 ```
 
@@ -116,7 +116,7 @@ def get_highest_covid_cases():
 ```
 @app.route('/least_covid_cases')
 def get_least_covid_cases():
-    least_covid_cases=data.sort(data.confirm.cast("Long")).select(col("state")).collect()[0][0]
+    least_covid_cases = data.sort(data.confirm).select(col("state")).collect()[0][0]
     return jsonify({'get_least_covid_cases':least_covid_cases})
 ```
 
@@ -127,7 +127,7 @@ def get_least_covid_cases():
 ```
 @app.route('/total_cases')
 def get_total_cases():
-    total_cases=data.select(sum(data.confirm).alias("Total cases")).collect()[0][0]
+    total_cases = data.select(sum(data.confirm).alias("Total cases")).collect()[0][0]
     return jsonify({'Total Cases':total_cases})
 ```
 
@@ -138,7 +138,7 @@ def get_total_cases():
 ```
 @app.route('/most_efficient_state')
 def get_most_efficient_state():
-    most_efficient_state=data.sort((data.cured.cast("Long")/data.confirm.cast("Long")).desc()).select(col("state")).collect()[0][0]
+    most_efficient_state = data.sort((data.cured/data.confirm).desc()).select(col("state")).collect()[0][0]
     return jsonify({'most efficient_state':most_efficient_state})
 ```
 
@@ -149,7 +149,7 @@ def get_most_efficient_state():
 ```
 @app.route('/least_efficient_state')
 def get_least_efficient_state():
-    least_efficient_state=data.sort((data.cured.cast("Long")/data.confirm.cast("Long")).asc()).select(col("state")).collect()[0][0]
+    least_efficient_state = data.sort((data.cured/data.confirm).asc()).select(col("state")).collect()[0][0]
     return jsonify({'least efficient_state':least_efficient_state})
 ```
 
